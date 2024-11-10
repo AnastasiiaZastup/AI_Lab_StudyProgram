@@ -1,95 +1,86 @@
-// Функція для визначення найкращої кафедри
 export function findBestDepartment(decision) {
   if (decision.interest === "наукова робота") {
     return findBestResearchDepartment(decision);
   } else if (decision.interest === "штучний інтелект") {
-    return departmentForAIResearch(decision);
+    return findBestAIResearchDepartment(decision);
   } else {
     return findBestPracticalDepartment(decision);
   }
 }
 
-// Функція для визначення кафедри для наукових досліджень
+// Вибір кафедри для наукових досліджень
 function findBestResearchDepartment(decision) {
   if (decision.math === "високий") {
-    return departmentForHighMath(decision);
+    return decision.research === "так"
+      ? "Кафедра прикладної математики"
+      : "Кафедра статистики та аналізу даних";
   }
+  if (decision.math === "середній") {
+    return "Кафедра обчислювальної математики";
+  }
+  if (decision.math === "низький") {
+    return "Кафедра базової математики";
+  }
+
   if (decision.physics === "високий") {
-    return departmentForHighPhysics(decision);
+    return decision.research === "так"
+      ? "Кафедра теоретичної фізики"
+      : "Кафедра інженерної фізики";
   }
-  if (decision.ai === "так") {
-    return departmentForAIResearch(decision);
+  if (decision.physics === "середній") {
+    return "Кафедра прикладної фізики";
   }
-  return generalResearchDepartment(decision);
+  if (decision.physics === "низький") {
+    return "Кафедра основ фізики";
+  }
+
+  return generalResearchDepartment();
 }
 
-// Функція для кафедри, що спеціалізується на ШІ
-function departmentForAIResearch(decision) {
-  if (decision.math === "високий" && decision.physics === "високий") {
-    return "Кафедра штучного інтелекту та робототехніки";
+// Кафедра для спеціалістів з ШІ
+function findBestAIResearchDepartment(decision) {
+  if (decision.math === "високий") {
+    return decision.programmingLevel > 7
+      ? "Кафедра програмування для ШІ"
+      : "Кафедра теоретичних досліджень у галузі ШІ";
   }
-  return "Кафедра теоретичних досліджень в галузі штучного інтелекту";
+  if (decision.math === "середній") {
+    return "Кафедра обчислювального інтелекту";
+  }
+  if (decision.math === "низький") {
+    return "Кафедра основ ШІ";
+  }
+  return "Загальна кафедра для досліджень з ШІ";
 }
 
-// Функція для визначення кафедри для практичного застосування
+// Вибір кафедри для практичного застосування
 function findBestPracticalDepartment(decision) {
   if (decision.interest === "програмування") {
-    return departmentForProgramming(decision);
+    if (decision.math === "високий") {
+      return "Кафедра комп'ютерних наук";
+    } else if (decision.math === "середній") {
+      return "Кафедра інформаційних технологій";
+    } else {
+      return "Кафедра основ програмування";
+    }
   }
   if (decision.interest === "електроніка") {
-    return departmentForElectronics(decision);
+    if (decision.physics === "високий") {
+      return "Кафедра електронних систем";
+    } else if (decision.physics === "середній") {
+      return "Кафедра прикладної електроніки";
+    } else {
+      return "Кафедра основ електроніки";
+    }
   }
-  if (decision.interest === "машинне навчання") {
-    return departmentForMachineLearning(decision);
-  }
-  return generalPracticalDepartment(decision);
-}
-
-// Кафедра для студентів з високим рівнем знань з математики
-function departmentForHighMath(decision) {
-  if (decision.research === "так") {
-    return "Кафедра прикладної математики";
-  }
-  return "Кафедра статистики та аналізу даних";
-}
-
-// Кафедра для студентів з високим рівнем знань з фізики
-function departmentForHighPhysics(decision) {
-  if (decision.research === "так") {
-    return "Кафедра теоретичної фізики";
-  }
-  return "Кафедра інженерної фізики";
-}
-
-// Кафедра для програмістів
-function departmentForProgramming(decision) {
-  if (decision.math === "високий") {
-    return "Кафедра комп'ютерних наук";
-  }
-  return "Кафедра інформаційних технологій";
-}
-
-// Кафедра для електроніки
-function departmentForElectronics(decision) {
-  if (decision.research === "так") {
-    return "Кафедра електронних систем";
-  }
-  return "Кафедра прикладної електроніки";
-}
-
-// Кафедра для машинного навчання
-function departmentForMachineLearning(decision) {
-  if (decision.math === "високий") {
-    return "Кафедра машинного навчання та обробки даних";
-  }
-  return "Кафедра інтелектуальних систем";
+  return generalPracticalDepartment();
 }
 
 // Загальні кафедри для дослідників та практиків
-function generalResearchDepartment(decision) {
+function generalResearchDepartment() {
   return "Загальна кафедра для досліджень";
 }
 
-function generalPracticalDepartment(decision) {
+function generalPracticalDepartment() {
   return "Загальна кафедра для практики";
 }
