@@ -3,84 +3,69 @@ export function findBestDepartment(decision) {
     return findBestResearchDepartment(decision);
   } else if (decision.interest === "штучний інтелект") {
     return findBestAIResearchDepartment(decision);
-  } else {
-    return findBestPracticalDepartment(decision);
+  } else if (decision.interest === "програмування") {
+    return findBestPracticalProgrammingDepartment(decision);
+  } else if (decision.interest === "електроніка") {
+    return findBestElectronicsDepartment(decision);
   }
+  return "Загальна кафедра для різних напрямків";
 }
 
-// Вибір кафедри для наукових досліджень
+// Наукова робота
 function findBestResearchDepartment(decision) {
   if (decision.math === "високий") {
-    return decision.research === "так"
-      ? "Кафедра прикладної математики"
-      : "Кафедра статистики та аналізу даних";
+    if (decision.avgScore >= 180) {
+      return decision.research === "так"
+        ? "Кафедра математичного моделювання"
+        : "Кафедра прикладної математики";
+    }
+    return "Кафедра статистики та аналізу даних";
   }
   if (decision.math === "середній") {
-    return "Кафедра обчислювальної математики";
+    return decision.physics === "високий"
+      ? "Кафедра обчислювальної фізики"
+      : "Кафедра обчислювальної математики";
   }
-  if (decision.math === "низький") {
-    return "Кафедра базової математики";
-  }
-
-  if (decision.physics === "високий") {
-    return decision.research === "так"
-      ? "Кафедра теоретичної фізики"
-      : "Кафедра інженерної фізики";
-  }
-  if (decision.physics === "середній") {
-    return "Кафедра прикладної фізики";
-  }
-  if (decision.physics === "низький") {
-    return "Кафедра основ фізики";
-  }
-
-  return generalResearchDepartment();
+  return "Кафедра базової математики";
 }
 
-// Кафедра для спеціалістів з ШІ
+// Штучний інтелект
 function findBestAIResearchDepartment(decision) {
+  if (decision.math === "високий" && decision.physics === "високий") {
+    return "Кафедра ШІ в робототехніці";
+  }
   if (decision.math === "високий") {
-    return decision.programmingLevel > 7
-      ? "Кафедра програмування для ШІ"
-      : "Кафедра теоретичних досліджень у галузі ШІ";
+    return "Кафедра машинного навчання";
   }
   if (decision.math === "середній") {
     return "Кафедра обчислювального інтелекту";
   }
-  if (decision.math === "низький") {
-    return "Кафедра основ ШІ";
-  }
-  return "Загальна кафедра для досліджень з ШІ";
+  return "Кафедра основ ШІ";
 }
 
-// Вибір кафедри для практичного застосування
-function findBestPracticalDepartment(decision) {
-  if (decision.interest === "програмування") {
-    if (decision.math === "високий") {
-      return "Кафедра комп'ютерних наук";
-    } else if (decision.math === "середній") {
-      return "Кафедра інформаційних технологій";
-    } else {
-      return "Кафедра основ програмування";
-    }
+// Програмування
+function findBestPracticalProgrammingDepartment(decision) {
+  if (
+    decision.programmingKnowledge === "просунутий" &&
+    decision.avgScore >= 175
+  ) {
+    return "Кафедра комп'ютерних наук";
   }
-  if (decision.interest === "електроніка") {
-    if (decision.physics === "високий") {
-      return "Кафедра електронних систем";
-    } else if (decision.physics === "середній") {
-      return "Кафедра прикладної електроніки";
-    } else {
-      return "Кафедра основ електроніки";
-    }
+  if (decision.programmingKnowledge === "середній") {
+    return "Кафедра інформаційних технологій";
   }
-  return generalPracticalDepartment();
+  return "Кафедра основ програмування";
 }
 
-// Загальні кафедри для дослідників та практиків
-function generalResearchDepartment() {
-  return "Загальна кафедра для досліджень";
-}
-
-function generalPracticalDepartment() {
-  return "Загальна кафедра для практики";
+// Електроніка
+function findBestElectronicsDepartment(decision) {
+  if (decision.physics === "високий") {
+    return decision.research === "так"
+      ? "Кафедра електронних систем"
+      : "Кафедра інженерної електроніки";
+  }
+  if (decision.physics === "середній") {
+    return "Кафедра прикладної електроніки";
+  }
+  return "Кафедра основ електроніки";
 }

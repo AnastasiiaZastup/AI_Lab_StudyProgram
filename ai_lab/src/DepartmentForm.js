@@ -7,7 +7,8 @@ function DepartmentForm() {
     math: "",
     physics: "",
     research: "",
-    programmingLevel: "", // Для введення числових значень
+    avgScore: "", // Середній бал НМТ
+    programmingKnowledge: "", // Рівень знань з програмування
   });
   const [result, setResult] = useState(null);
 
@@ -29,6 +30,7 @@ function DepartmentForm() {
           <option value="наукова робота">Наукова робота</option>
           <option value="програмування">Програмування</option>
           <option value="електроніка">Електроніка</option>
+          <option value="штучний інтелект">Штучний інтелект</option>
         </select>
       </label>
 
@@ -64,16 +66,28 @@ function DepartmentForm() {
       </label>
 
       <label>
-        Рівень знань з програмування (оцініть від 1 до 10):
+        Середній бал НМТ:
         <input
           type="number"
-          min="1"
-          max="10"
-          value={data.programmingLevel}
-          onChange={(e) =>
-            setData({ ...data, programmingLevel: e.target.value })
-          }
+          min="100"
+          max="200"
+          value={data.avgScore}
+          onChange={(e) => setData({ ...data, avgScore: e.target.value })}
         />
+      </label>
+
+      <label>
+        Рівень знань з програмування:
+        <select
+          onChange={(e) =>
+            setData({ ...data, programmingKnowledge: e.target.value })
+          }
+        >
+          <option value="">- Оберіть -</option>
+          <option value="початковий">Початковий</option>
+          <option value="середній">Середній</option>
+          <option value="просунутий">Просунутий</option>
+        </select>
       </label>
 
       <button onClick={handleSubmit}>Отримати рекомендацію</button>
